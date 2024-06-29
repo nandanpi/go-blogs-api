@@ -3,9 +3,9 @@ package auth
 import (
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -40,22 +40,21 @@ func verifyToken(tokenString string) (jwt.Claims, error) {
 	return token.Claims, err
 }
 
-func JWTAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		tokenString := r.Header.Get("Authorization")
+func ProtectedRoute(f func(c *gin.Context)) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tokenString := c.GetHeader("Authorization")
 		if len(tokenString) == 0 {
-			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("Missing Authorization Header"))
+			c.JSON(401, gin.H{"message": "Missing Authorization Header"})
+			c.Abort()
 			return
 		}
-		tokenString = strings.Replace(tokenString, "Bearer ", "", 1)
+		tokenString = tokenString[7:]
 		_, err := verifyToken(tokenString)
 		if err != nil {
-			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("Error verifying JWT token: " + err.Error()))
+			c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+			c.Abort()
 			return
 		}
-		next.ServeHTTP(w, r)
-	})
+		f(c)
+	}
 }

@@ -8,7 +8,6 @@ import (
 )
 
 func (d *service) CreateUser(c *gin.Context, user types.AuthRequest) {
-	// err := d.db.Create(&Users{Username: user.Username, Password: user.Password})
 	resp := make(map[string]string)
 	result := d.db.Select("Username", "Password").Create(&Users{Username: user.Username, Password: user.Password})
 	if result.Error != nil {
