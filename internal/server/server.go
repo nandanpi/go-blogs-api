@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -25,7 +26,7 @@ func NewServer() *http.Server {
 
 		db: database.New(),
 	}
-
+	log.Println("Server is running on port", NewServer.port)
 	// Declare Server config
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", NewServer.port),
