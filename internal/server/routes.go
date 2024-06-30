@@ -20,7 +20,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.POST("/updatePost/:id", auth.ProtectedRoute(s.UpdatePostHandler))
 	r.DELETE("/deletePost/:id", auth.ProtectedRoute(s.DeletePostHandler))
 	r.POST("/addComment", auth.ProtectedRoute(s.AddCommentHandler))
-	r.GET("/getComments", s.GetCommentsHandler)
+	r.GET("/getComments/:id", s.GetCommentsHandler)
 	r.DELETE("deleteComment/:id", auth.ProtectedRoute(s.DeleteCommentHandler))
 	r.POST("/likePost", auth.ProtectedRoute(s.LikePostHandler))
 	r.POST("/unlikePost", auth.ProtectedRoute(s.UnlikePostHandler))
