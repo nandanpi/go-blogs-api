@@ -19,7 +19,6 @@ type Users struct {
 
 type BlogPost struct {
 	gorm.Model
-	ID       uint       `json:"id" gorm:"primaryKey;autoIncrement;not null;uniqueIndex"`
 	Title    string     `json:"title" gorm:"not null"`
 	Content  string     `json:"content" gorm:"type:text;not null"`
 	UserID   uint       `json:"user_id"`
@@ -30,14 +29,12 @@ type BlogPost struct {
 
 type Likes struct {
 	gorm.Model
-	ID     uint `json:"id" gorm:"primaryKey;autoIncrement;not null;uniqueIndex"`
 	UserID uint `json:"user_id"`
 	PostID uint `json:"post_id"`
 }
 
 type Comments struct {
 	gorm.Model
-	ID      uint   `json:"id" gorm:"primaryKey;autoIncrement;not null;uniqueIndex"`
 	Content string `json:"content" gorm:"type:text;not null"`
 	UserID  uint   `json:"user_id"`
 	PostID  uint   `json:"post_id"`

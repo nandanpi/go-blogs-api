@@ -23,7 +23,7 @@ func (d *service) CreateUser(c *gin.Context, user types.AuthRequest) {
 func (d *service) GetUser(c *gin.Context, username string) *Users {
 	user := &Users{}
 	resp := make(map[string]string)
-	result := d.db.Where("username = ?", username).First(&user)
+	result := d.db.Preload("Blogs").Preload("Likes").Preload("Comments").Where("username = ?", username).First(&user)
 	if result.Error != nil {
 		resp["message"] = "User not found"
 		c.JSON(http.StatusNotFound, resp)
@@ -48,7 +48,8 @@ func (d *service) CreatePost(c *gin.Context, req types.CreatePostRequest) {
 func (d *service) GetPost(c *gin.Context, id uint) *BlogPost {
 	resp := make(map[string]string)
 	post := &BlogPost{}
-	result := d.db.Where("id = ?", id).First(&post)
+
+	result := d.db.Preload("User").Preload("Comments").Preload("Likes").Where("id = ?", id).First(&post)
 	if result.Error != nil {
 		resp["message"] = "Post not found"
 		c.JSON(http.StatusNotFound, resp)
@@ -60,7 +61,8 @@ func (d *service) GetPost(c *gin.Context, id uint) *BlogPost {
 func (d *service) GetAllPosts(c *gin.Context) []BlogPost {
 	resp := make(map[string]string)
 	posts := []BlogPost{}
-	result := d.db.Find(&posts)
+	result := d.db.Preload("User").Preload("Comments").Preload("Likes").Find(&posts)
+
 	if result.Error != nil {
 		resp["message"] = "Failed to get posts"
 		c.JSON(http.StatusInternalServerError, resp)
