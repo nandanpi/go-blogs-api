@@ -45,7 +45,7 @@ func (d *service) CreatePost(c *gin.Context, req types.CreatePostRequest) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func (d *service) GetPost(c *gin.Context, id int) *BlogPost {
+func (d *service) GetPost(c *gin.Context, id uint) *BlogPost {
 	resp := make(map[string]string)
 	post := &BlogPost{}
 	result := d.db.Where("id = ?", id).First(&post)
@@ -89,7 +89,7 @@ func (d *service) UpdatePost(c *gin.Context, req types.UpdatePostRequest) {
 	resp["message"] = "Post updated successfully"
 }
 
-func (d *service) DeletePost(c *gin.Context, id int) {
+func (d *service) DeletePost(c *gin.Context, id uint) {
 	resp := make(map[string]string)
 	post := &BlogPost{}
 	result := d.db.Where("id = ?", id).First(&post)
@@ -121,7 +121,7 @@ func (d *service) CreateComment(c *gin.Context, req types.CreateCommentRequest) 
 	c.JSON(http.StatusOK, resp)
 }
 
-func (d *service) GetCommentByID(c *gin.Context, commentID int) Comments {
+func (d *service) GetCommentByID(c *gin.Context, commentID uint) Comments {
 	resp := make(map[string]string)
 	comment := Comments{}
 	result := d.db.Where("id = ?", commentID).First(&comment)
@@ -133,7 +133,7 @@ func (d *service) GetCommentByID(c *gin.Context, commentID int) Comments {
 	return comment
 }
 
-func (d *service) GetComments(c *gin.Context, postID int) []Comments {
+func (d *service) GetComments(c *gin.Context, postID uint) []Comments {
 	resp := make(map[string]string)
 	comments := []Comments{}
 	result := d.db.Where("post_id = ?", postID).Find(&comments)
@@ -145,7 +145,7 @@ func (d *service) GetComments(c *gin.Context, postID int) []Comments {
 	return comments
 }
 
-func (d *service) DeleteComment(c *gin.Context, id int) {
+func (d *service) DeleteComment(c *gin.Context, id uint) {
 	resp := make(map[string]string)
 	comment := &Comments{}
 	result := d.db.Where("id = ?", id).First(&comment)

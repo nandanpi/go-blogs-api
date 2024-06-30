@@ -18,14 +18,14 @@ type Service interface {
 	CreateUser(c *gin.Context, user types.AuthRequest)
 	GetUser(c *gin.Context, username string) *Users
 	CreatePost(c *gin.Context, req types.CreatePostRequest)
-	GetPost(c *gin.Context, id int) *BlogPost
+	GetPost(c *gin.Context, id uint) *BlogPost
 	GetAllPosts(c *gin.Context) []BlogPost
 	UpdatePost(c *gin.Context, req types.UpdatePostRequest)
-	DeletePost(c *gin.Context, id int)
+	DeletePost(c *gin.Context, id uint)
 	CreateComment(c *gin.Context, req types.CreateCommentRequest)
-	GetCommentByID(c *gin.Context, commentID int) Comments
-	GetComments(c *gin.Context, postID int) []Comments
-	DeleteComment(c *gin.Context, id int)
+	GetCommentByID(c *gin.Context, commentID uint) Comments
+	GetComments(c *gin.Context, postID uint) []Comments
+	DeleteComment(c *gin.Context, id uint)
 	LikePost(c *gin.Context, req types.LikePostRequest)
 	UnlikePost(c *gin.Context, req types.LikePostRequest)
 }

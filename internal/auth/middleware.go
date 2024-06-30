@@ -10,13 +10,13 @@ import (
 )
 
 type Claims struct {
-	UserID int `json:"user_id"`
+	UserID uint `json:"user_id"`
 	jwt.StandardClaims
 }
 
 var JWTKey = []byte(os.Getenv("JWT_SECRET"))
 
-func GenerateJWT(userID int) (string, error) {
+func GenerateJWT(userID uint) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
 		UserID: userID,

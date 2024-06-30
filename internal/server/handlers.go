@@ -107,7 +107,7 @@ func (s *Server) GetPostHandler(c *gin.Context) {
 	id := c.Param("id")
 	intID, _ := strconv.Atoi(id)
 
-	post := s.db.GetPost(c, intID)
+	post := s.db.GetPost(c, uint(intID))
 	if post == nil {
 		c.JSON(http.StatusNotFound, map[string]string{"message": "Post not found"})
 		return
@@ -133,7 +133,7 @@ func (s *Server) UpdatePostHandler(c *gin.Context) {
 
 	id := c.Param("id")
 	intID, _ := strconv.Atoi(id)
-	post := s.db.GetPost(c, intID)
+	post := s.db.GetPost(c, uint(intID))
 	if post == nil {
 		c.JSON(http.StatusNotFound, map[string]string{"message": "Post not found"})
 		return
@@ -155,13 +155,13 @@ func (s *Server) DeletePostHandler(c *gin.Context) {
 	id := c.Param("id")
 	intID, _ := strconv.Atoi(id)
 
-	post := s.db.GetPost(c, intID)
+	post := s.db.GetPost(c, uint(intID))
 	if post == nil {
 		c.JSON(http.StatusNotFound, map[string]string{"message": "Post not found"})
 		return
 	}
 
-	s.db.DeletePost(c, intID)
+	s.db.DeletePost(c, uint(intID))
 	resp["message"] = "Post deleted"
 
 	c.JSON(http.StatusOK, resp)
@@ -187,7 +187,7 @@ func (s *Server) AddCommentHandler(c *gin.Context) {
 func (s *Server) GetCommentsHandler(c *gin.Context) {
 	id := c.Param("id")
 	intID, _ := strconv.Atoi(id)
-	comments := s.db.GetComments(c, intID)
+	comments := s.db.GetComments(c, uint(intID))
 	c.JSON(http.StatusOK, comments)
 }
 
@@ -196,7 +196,7 @@ func (s *Server) DeleteCommentHandler(c *gin.Context) {
 	id := c.Param("id")
 	intID, _ := strconv.Atoi(id)
 
-	s.db.DeleteComment(c, intID)
+	s.db.DeleteComment(c, uint(intID))
 	resp["message"] = "Comment deleted"
 
 	c.JSON(http.StatusOK, resp)
