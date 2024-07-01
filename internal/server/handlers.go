@@ -83,7 +83,7 @@ func (s *Server) HandleLogin(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]string{"token": token})
+	c.JSON(http.StatusOK, map[string]interface{}{"token": token, "user": map[string]interface{}{"username": dbUser.Username, "id": dbUser.ID}})
 }
 
 func (s *Server) CreatePostHandler(c *gin.Context) {
