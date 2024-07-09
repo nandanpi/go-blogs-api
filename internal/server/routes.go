@@ -16,11 +16,13 @@ func (s *Server) RegisterRoutes() http.Handler {
 		AllowAllOrigins: true,
 
 		AllowMethods:     []string{"POST", "GET", "OPTIONS", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Access-Control-Allow-Origin"},
+		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}
+
+	r.Use(cors.New(config))
 
 	r.GET("/", auth.ProtectedRoute(s.RootRouteHandler))
 	r.POST("/signup", s.HandleSignUp)
@@ -36,8 +38,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.DELETE("deleteComment/:id", auth.ProtectedRoute(s.DeleteCommentHandler))
 	r.POST("/likePost", auth.ProtectedRoute(s.LikePostHandler))
 	r.POST("/unlikePost", auth.ProtectedRoute(s.UnlikePostHandler))
-
-	r.Use(cors.New(config))
 
 	return r
 }
